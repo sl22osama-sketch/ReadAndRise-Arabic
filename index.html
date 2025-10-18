@@ -1,0 +1,34 @@
+import { useState } from 'react';
+import { Student } from '@/types';
+import WelcomeScreen from '@/components/WelcomeScreen';
+import CategorySelection from '@/components/CategorySelection';
+import LevelMap from '@/components/LevelMap';
+
+const Index = () => {
+  const [student, setStudent] = useState<Student | null>(null);
+  const [showCategorySelection, setShowCategorySelection] = useState(false);
+
+  const handleStudentSubmit = (studentData: Student) => {
+    setStudent(studentData);
+    setShowCategorySelection(true);
+  };
+
+  const handleCategorySelect = (category: 'native' | 'non-native') => {
+    if (student) {
+      setStudent({ ...student, category });
+      setShowCategorySelection(false);
+    }
+  };
+
+  if (!student) {
+    return <WelcomeScreen onSubmit={handleStudentSubmit} />;
+  }
+
+  if (showCategorySelection) {
+    return <CategorySelection onSelect={handleCategorySelect} />;
+  }
+
+  return <LevelMap student={student} />;
+};
+
+export default Index;
